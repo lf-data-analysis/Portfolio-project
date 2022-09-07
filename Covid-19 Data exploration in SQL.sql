@@ -1,3 +1,8 @@
+/*
+Skills used: Joins, creating views, converting data types
+*/
+
+
 SELECT *
 FROM [Portfolio Project]..CovidDeaths$
 ORDER BY 3,4
@@ -11,24 +16,30 @@ FROM [Portfolio Project]..CovidDeaths$
 ORDER BY 1,2
 
 ---Percentage of total cases that result in death in the UK
+
 SELECT Location, date, total_cases,total_deaths, (total_deaths/total_cases)*100 as DeathPercentage
 FROM [Portfolio Project]..CovidDeaths$
 WHERE location like 'United Kingdom'
 ORDER BY 1,2
 
 ---Percentage of the population who has had covid ind the UK
+
 SELECT Location, date, total_cases, Population, (total_cases/Population)*100 as PopulationInfectionRate
 FROM [Portfolio Project]..CovidDeaths$
 WHERE location like 'United Kingdom'
 ORDER BY 1,2
 
----Countries with highest infection rate
+
+---Countries with highest infection rate per capita 
+
 SELECT Location, Population, MAX(total_cases) as HighestCases, Max((total_cases/Population))*100 as PopulationInfectionRate
 FROM [Portfolio Project]..CovidDeaths$
 GROUP BY Location, population
 ORDER BY 4 DESC
 
+
 ---Countries with highest death rate per capita
+
 SELECT Location, Population, MAX(total_deaths) AS HighestTotalDeaths, MAX((total_deaths/Population))*100 as PopulationDeathRate
 FROM [Portfolio Project]..CovidDeaths$ WHERE continent IS NOT NULL
 GROUP BY Location, population
@@ -45,6 +56,7 @@ SELECT continent, MAX((CAST(total_deaths AS INT)) as TotalDeaths, Population, Ma
 FROM [Portfolio Project]..CovidDeaths$
 GROUP BY Continent, Population
 ORDER BY 4 DESC
+
 
 ---Continent with highest death count
 SELECT Location, MAX(Cast(total_deaths AS int)) AS DeathCount
@@ -63,6 +75,7 @@ FROM [Portfolio Project]..CovidDeaths$
 WHERE continent IS NOT NULL
 GROUP BY date
 ORDER BY 1 asc
+
 
 ---Joining tables
 SELECT *
@@ -151,7 +164,8 @@ WHERE dea.location LIKE 'United Kingdom'
 SELECT *, (RollingVaccinations/Population) AS VacsPerCapita
 FROM #PercentagePopVac
 
----Creating View
+---Creating View we can use this view later for visualisations 
+
 CREATE VIEW DeathRateByContinent as
 SELECT Location, MAX(Cast(total_deaths AS int)) AS DeathCount
 FROM [Portfolio Project]..CovidDeaths$
