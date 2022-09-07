@@ -1,7 +1,6 @@
+
 SELECT *
 FROM [Portfolio Project]..Sheet1$
-
-
 
 
 SELECT SaleDateConverted, CONVERT(Date,SaleDate)
@@ -16,8 +15,6 @@ Add SaleDateConverted Date;
 
 Update [Portfolio Project]..Sheet1$
 SET SaleDateConverted = CONVERT(Date,SaleDate)
-
-
 
 
 ---Populate Property Address data
@@ -65,16 +62,8 @@ SET PropertySplitCity = SUBSTRING(PropertyAddress, CHARINDEX(',', PropertyAddres
 
 
 
-
-
-
 SELECT *
 FROM [Portfolio Project]..Sheet1$
-
-
-
-
-
 
 
 SELECT OwnerAddress
@@ -106,9 +95,6 @@ Update [Portfolio Project]..Sheet1$
 SET OwnerSplitState = PARSENAME(REPLACE(OwnerAddress, ',', '.') ,1)
 
 
-
-
-
 SELECT DISTINCT(SoldAsVacant), Count(SoldAsVacant)
 FROM [Portfolio Project]..Sheet1$
 GROUP BY soldAsVacant
@@ -119,10 +105,7 @@ SET SoldAsVacant = CASE When SoldAsVacant = 'Y' THEN 'Yes'
        WHEN SoldAsVacant = 'N' THEN 'No'
 	   ELSE SoldAsVacant
 	   END
-
-
-
-
+---------------------------------------------------------------------------------------------
 
 -- remove dupes
 WITH RowNumCTE AS(
@@ -130,12 +113,12 @@ SELECT *,
     ROW_NUMBER() OVER(
 	PARTITION BY ParcelID,
 	             PropertyAddress,
-				 SalePrice,
-				 SaleDate,
-				 LegalReference
-				 ORDER BY
-				    UniqueID
-					) row_num
+		     SalePrice,
+		     SaleDate,
+		     LegalReference
+		     ORDER BY
+		     	UniqueID
+		     	) row_num
 
 
 
@@ -147,15 +130,12 @@ FROM RowNumCTE
 WHERE row_num > 1
 ORDER BY propertyaddress
 
-
-
+---------------------------------------------------------------------------------------------
 
 ---delete unused columns
 
-
 SELECT *
 FROM [Portfolio Project]..Sheet1$
-
 
 ALTER TABLE [Portfolio Project]..Sheet1$
 DROP COLUMN SaleDate, OwnerAddress, TaxDistrict, PropertyAddress
